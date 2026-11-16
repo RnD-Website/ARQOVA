@@ -1,11 +1,11 @@
 // Photos: `local:<name>` = your own shoot photos bundled in src/assets/photos (two sizes each);
 // anything else is an Unsplash photo ID. Every image goes through `photo()` / `srcSet()`.
 const FILES = import.meta.glob(
-  '../assets/photos/{shore,sunset,golden,sapphire,roses,stool,pleat,alex,kelly,paloma,maitreyi,ember,olive,sun,ruffle,flora,sophia}-{800,1440}.webp',
+  '../assets/photos/{bow,jade,shore,sunset,golden,sapphire,roses,stool,pleat,alex,kelly,paloma,maitreyi,ember,olive,sun,ruffle,flora,sophia}-{800,1440}.webp',
   { eager: true, import: 'default' },
 ) as Record<string, string>
 const LOCAL_W: Record<string, number> = {
-  shore: 1028, sunset: 1123, golden: 1024, sapphire: 1024, roses: 1122, stool: 1122, pleat: 618, alex: 1086, kelly: 1086, paloma: 1086, maitreyi: 1086, ember: 1086,
+  bow: 1102, jade: 1086, shore: 1028, sunset: 1123, golden: 1024, sapphire: 1024, roses: 1122, stool: 1122, pleat: 618, alex: 1086, kelly: 1086, paloma: 1086, maitreyi: 1086, ember: 1086,
   olive: 1122, sun: 1083, ruffle: 1122, flora: 1440, sophia: 1440,
 }
 const file = (name: string, w: 800 | 1440) => FILES[`../assets/photos/${name}-${w}.webp`]
@@ -30,8 +30,8 @@ export const IMG = {
   intro: 'local:olive',
   editor: 'local:flora',
   signature: 'local:sun',
-  studio: '1534528741775-53994a69daeb',
-  studio2: '1509631179647-0177331693ae',
+  studio: 'local:bow',
+  studio2: 'local:jade',
   seq: [
     'local:stool',
     'local:sunset',

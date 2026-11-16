@@ -63,11 +63,11 @@ export function About() {
         <div className="about-photos" ref={imgRef}>
           <div className="about-photo main">
             <motion.div className="fill-wrap" style={{ y }}>
-              <Photo id={IMG.studio} alt="Portrait from an ARQOVA cover shoot" sizes="(max-width: 767px) 110vw, 55vw" className="fill" />
+              <Photo id={IMG.studio} alt="Portrait in a yellow bow gown from an ARQOVA shoot" sizes="(max-width: 767px) 110vw, 55vw" position="68% 12%" className="fill" />
             </motion.div>
           </div>
           <motion.div className="about-photo inset" style={{ y: y2 }}>
-            <Photo id={IMG.studio2} alt="Proofs on the studio wall" sizes="(max-width: 767px) 45vw, 25vw" className="fill" />
+            <Photo id={IMG.studio2} alt="Portrait in green silk from an ARQOVA shoot" sizes="(max-width: 767px) 45vw, 25vw" position="50% 22%" className="fill" />
           </motion.div>
           <p className="about-caption">The newsroom, Lisbon — Rua da Boavista 41</p>
         </div>
