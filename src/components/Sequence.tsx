@@ -32,7 +32,7 @@ export function Sequence() {
     const hz = (1 - c) * 36
     return `inset(${v}% ${hz}% ${v}% ${hz}% round ${(1 - c) * 6}px)`
   })
-  const heroScale = useTransform(p, [0, 0.66, 1], [1.35, 1.05, 1])
+  const heroScale = useTransform(p, [0, 0.66, 1], [1.12, 1.02, 1])
   const heroY = useTransform(p, [0, 0.3], ['8vh', '0vh'])
   const shade = useTransform(p, [0.58, 0.72], [0, 0.48])
   const framesO = useTransform(p, [0.52, 0.66], [1, 0])
@@ -59,7 +59,7 @@ export function Sequence() {
 
         <motion.div className="seq-hero" style={{ clipPath, y: heroY }}>
           <motion.div className="seq-hero-inner" style={{ scale: heroScale }}>
-            <Photo id={IMG.seq[0]} alt="A model in a long coat in a stone courtyard" sizes="140vw" position="50% 30%" className="fill" />
+            <Photo id={IMG.seq[0]} alt="A model in a long coat in a stone courtyard" sizes="120vw" position="50% 16%" className="fill" />
           </motion.div>
           <motion.div className="seq-shade" style={{ opacity: shade }} />
         </motion.div>

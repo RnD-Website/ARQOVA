@@ -33,13 +33,13 @@ export const IMG = {
   studio: '1534528741775-53994a69daeb',
   studio2: '1509631179647-0177331693ae',
   seq: [
-    'local:maitreyi',
+    'local:stool',
     'local:sunset',
     'local:roses',
     'local:sapphire',
     'local:golden',
     'local:pleat',
-    'local:stool',
+    'local:maitreyi',
   ],
 }
 
