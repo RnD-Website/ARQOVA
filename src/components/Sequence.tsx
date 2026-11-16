@@ -87,7 +87,7 @@ function Frame({ f, p }: { f: (typeof FRAMES)[number]; p: MotionValue<number> })
       className="seq-frame"
       style={{ left: `${f.left}vw`, top: `${f.top}vh`, width: `${f.w}vw`, y, rotate }}
     >
-      <Photo id={f.id} alt="" sizes="(max-width: 767px) 50vw, 30vw" className="fill" />
+      <Photo id={f.id} alt="" sizes="(max-width: 767px) 50vw, 30vw" position="50% 22%" className="fill" />
     </motion.figure>
   )
 }

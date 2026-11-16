@@ -1,11 +1,11 @@
 // Photos: `local:<name>` = your own shoot photos bundled in src/assets/photos (two sizes each);
 // anything else is an Unsplash photo ID. Every image goes through `photo()` / `srcSet()`.
 const FILES = import.meta.glob(
-  '../assets/photos/{shore,alex,kelly,paloma,maitreyi,ember,olive,sun,ruffle,flora,sophia}-{800,1440}.webp',
+  '../assets/photos/{shore,sunset,golden,sapphire,roses,stool,pleat,alex,kelly,paloma,maitreyi,ember,olive,sun,ruffle,flora,sophia}-{800,1440}.webp',
   { eager: true, import: 'default' },
 ) as Record<string, string>
 const LOCAL_W: Record<string, number> = {
-  shore: 1028, alex: 1086, kelly: 1086, paloma: 1086, maitreyi: 1086, ember: 1086,
+  shore: 1028, sunset: 1123, golden: 1024, sapphire: 1024, roses: 1122, stool: 1122, pleat: 618, alex: 1086, kelly: 1086, paloma: 1086, maitreyi: 1086, ember: 1086,
   olive: 1122, sun: 1083, ruffle: 1122, flora: 1440, sophia: 1440,
 }
 const file = (name: string, w: 800 | 1440) => FILES[`../assets/photos/${name}-${w}.webp`]
@@ -18,6 +18,7 @@ export const photo = (id: string, w = 1600, h?: number) => {
 export const srcSet = (id: string, widths = [640, 960, 1280, 1600, 2000, 2560, 3200]) => {
   if (id.startsWith('local:')) {
     const n = id.slice(6)
+    if (LOCAL_W[n] <= 720) return `${file(n, 1440)} ${LOCAL_W[n]}w`
     return `${file(n, 800)} 720w, ${file(n, 1440)} ${LOCAL_W[n]}w`
   }
   return widths.map((w) => `${photo(id, w)} ${w}w`).join(', ')
@@ -33,12 +34,12 @@ export const IMG = {
   studio2: '1509631179647-0177331693ae',
   seq: [
     'local:maitreyi',
-    '1539533018447-63fcce2678e3',
-    '1485462537746-965f33f7f6a7',
-    '1506794778202-cad84cf45f1d',
-    '1605763240000-7e93b172d754',
-    '1519699047748-de8e457a634e',
-    '1483985988355-763728e1935b',
+    'local:sunset',
+    'local:roses',
+    'local:sapphire',
+    'local:golden',
+    'local:pleat',
+    'local:stool',
   ],
 }
 
