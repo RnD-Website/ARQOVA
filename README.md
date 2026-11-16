@@ -22,7 +22,7 @@ npm run build:single # one self-contained HTML → dist-single/index.html
 ```
 
 `ARQOVA-preview.html` (in this folder) is a prebuilt single-file version with every photo built in —
-double-click to open. Fonts and the two agency-section photos still load online.
+double-click to open. Only the fonts load online.
 
 ## Structure
 
@@ -54,8 +54,8 @@ section's scroll). Section lengths: intro `640vh` (mobile `560vh`), each story `
 
 - **Photography:** shoot photos live in `src/assets/photos`. To add one, save it there as
   `<name>-800.webp` and `<name>-1440.webp`, add the name to the `import.meta.glob` list and `LOCAL_W`
-  in `content.ts`, then use `'local:<name>'` anywhere a photo is set. The two agency-section photos
-  are still Unsplash IDs. A light shared grade + grain keeps everything reading as one shoot.
+  in `content.ts`, then use `'local:<name>'` anywhere a photo is set. Every photo on the site is local.
+  A light shared grade + grain keeps everything reading as one shoot.
 - **Image sharpness:** each `<Photo>` passes a `sizes` hint that includes the scroll-zoom factor, so
   browsers download a file big enough for the zoomed view. Keep that in mind if you change zooms.
 - **Form:** the pitch card is front-end only — connect `onSubmit` in `BackCover.tsx` to your
