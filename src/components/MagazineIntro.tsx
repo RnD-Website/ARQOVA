@@ -152,7 +152,7 @@ function Cover({ p }: { p?: MotionValue<number> }) {
   return (
     <div className="cover">
       <motion.div className="cover-img" style={{ scale: imgScale }}>
-        <Photo id={IMG.cover} alt="Cover: a model in dramatic low light" priority sizes="115vw" position="50% 22%" className="fill" />
+        <Photo id={IMG.cover} alt="Cover: a model in dramatic low light" priority sizes="115vw" position="50% 6%" className="fill" />
       </motion.div>
       <div className="cover-vignette" />
       <motion.p className="cover-kicker" style={{ opacity: o1 }}>

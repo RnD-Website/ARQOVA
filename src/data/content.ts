@@ -1,11 +1,11 @@
 // Photos: `local:<name>` = your own shoot photos bundled in src/assets/photos (two sizes each);
 // anything else is an Unsplash photo ID. Every image goes through `photo()` / `srcSet()`.
 const FILES = import.meta.glob(
-  '../assets/photos/{alex,kelly,paloma,maitreyi,ember,olive,sun,ruffle,flora,sophia}-{800,1440}.webp',
+  '../assets/photos/{shore,alex,kelly,paloma,maitreyi,ember,olive,sun,ruffle,flora,sophia}-{800,1440}.webp',
   { eager: true, import: 'default' },
 ) as Record<string, string>
 const LOCAL_W: Record<string, number> = {
-  alex: 1086, kelly: 1086, paloma: 1086, maitreyi: 1086, ember: 1086,
+  shore: 1028, alex: 1086, kelly: 1086, paloma: 1086, maitreyi: 1086, ember: 1086,
   olive: 1122, sun: 1083, ruffle: 1122, flora: 1440, sophia: 1440,
 }
 const file = (name: string, w: 800 | 1440) => FILES[`../assets/photos/${name}-${w}.webp`]
@@ -24,7 +24,7 @@ export const srcSet = (id: string, widths = [640, 960, 1280, 1600, 2000, 2560, 3
 }
 
 export const IMG = {
-  cover: 'local:alex',
+  cover: 'local:shore',
   advert: 'local:sophia',
   intro: 'local:olive',
   editor: 'local:flora',
