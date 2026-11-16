@@ -509,7 +509,8 @@ i, em { font-style: italic; }
 .back-mark-wrap { overflow: hidden; }
 .back-mark { font-family: var(--serif); font-weight: 800; font-size: 21vw; line-height: 0.9; padding-bottom: 0.06em; text-align: center; color: var(--bg); margin: 2vw 0 0; white-space: nowrap; }
 .back-colophon { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 18px 0 56px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; border-top: 1px solid rgba(242, 239, 233, 0.35); }
-.back-colophon span:first-child { font-family: var(--serif); font-style: italic; font-size: 16px; letter-spacing: 0; text-transform: none; }
+.back-colophon .credit { font-family: var(--serif); font-style: italic; font-size: 16px; letter-spacing: 0; text-transform: none; transition: color 0.3s; }
+.back-colophon .credit:hover { color: #e9c9c6; }
 
 /* =====================================================================
    Responsive — laptop 1280, tablet 768, mobile 390

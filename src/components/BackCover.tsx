@@ -89,7 +89,7 @@ export function BackCover() {
           <motion.p className="back-mark" style={{ y: markY, letterSpacing: markS }} aria-hidden>ARQOVA</motion.p>
         </div>
         <div className="back-colophon">
-          <span>Made to be kept.</span>
+          <a href="https://seative.digital" target="_blank" rel="noreferrer" className="credit">Design by seative.digital</a>
           <span>Issue Nº01 · The Agency Issue · Autumn / Winter 2026</span>
           <Barcode className="light" />
         </div>
