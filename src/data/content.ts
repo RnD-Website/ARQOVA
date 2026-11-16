@@ -1,20 +1,38 @@
-// Unsplash photo IDs — every image is served through `photo()` so sizing stays consistent.
-export const photo = (id: string, w = 1600, h?: number) =>
-  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}${h ? `&h=${h}` : ''}&q=80`
+// Photos: `local:<name>` = your own shoot photos bundled in src/assets/photos (two sizes each);
+// anything else is an Unsplash photo ID. Every image goes through `photo()` / `srcSet()`.
+const FILES = import.meta.glob(
+  '../assets/photos/{alex,kelly,paloma,maitreyi,ember,olive,sun,ruffle,flora,sophia}-{800,1440}.webp',
+  { eager: true, import: 'default' },
+) as Record<string, string>
+const LOCAL_W: Record<string, number> = {
+  alex: 1086, kelly: 1086, paloma: 1086, maitreyi: 1086, ember: 1086,
+  olive: 1122, sun: 1083, ruffle: 1122, flora: 1440, sophia: 1440,
+}
+const file = (name: string, w: 800 | 1440) => FILES[`../assets/photos/${name}-${w}.webp`]
 
-export const srcSet = (id: string, widths = [480, 800, 1200, 1600, 2200]) =>
-  widths.map((w) => `${photo(id, w)} ${w}w`).join(', ')
+export const photo = (id: string, w = 1600, h?: number) => {
+  if (id.startsWith('local:')) return file(id.slice(6), w <= 800 ? 800 : 1440)
+  return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}${h ? `&h=${h}` : ''}&q=88`
+}
+
+export const srcSet = (id: string, widths = [640, 960, 1280, 1600, 2000, 2560, 3200]) => {
+  if (id.startsWith('local:')) {
+    const n = id.slice(6)
+    return `${file(n, 800)} 720w, ${file(n, 1440)} ${LOCAL_W[n]}w`
+  }
+  return widths.map((w) => `${photo(id, w)} ${w}w`).join(', ')
+}
 
 export const IMG = {
-  cover: '1601412436009-d964bd02edbc',
-  advert: '1554412933-514a83d2f3c8',
-  intro: '1608748010899-18f300247112',
-  editor: '1524504388940-b1c1722653e1',
-  signature: '1475695752828-6d2b0a83cf8a',
+  cover: 'local:alex',
+  advert: 'local:sophia',
+  intro: 'local:olive',
+  editor: 'local:flora',
+  signature: 'local:sun',
   studio: '1534528741775-53994a69daeb',
   studio2: '1509631179647-0177331693ae',
   seq: [
-    '1618244972963-dbee1a7edc95',
+    'local:maitreyi',
     '1539533018447-63fcce2678e3',
     '1485462537746-965f33f7f6a7',
     '1506794778202-cad84cf45f1d',
@@ -39,6 +57,7 @@ export type Story = {
   tint: string // panel colour
   ink: string // panel text colour
   imageSide: 'left' | 'right'
+  pos?: string // object-position for the spread photo (default 50% 25%)
 }
 
 export const STORIES: Story[] = [
@@ -48,7 +67,7 @@ export const STORIES: Story[] = [
     intro: 'Maison Vael asked for a lookbook. We gave them a magazine: 180 pages of essays, portraits and monochrome tailoring, edited like a literary journal and printed on uncoated stock.',
     quote: 'A catalogue tells you what to buy. A magazine tells you why it matters.',
     credits: [['Editor-in-chief', 'Lior Anand'], ['Art direction', 'Céline Moreau'], ['Photography', 'Yuki Tan'], ['Pages', '180 · biannual'], ['For', 'Maison Vael']],
-    image: '1613915617430-8ab0fd7c6baf', thumb: '1574015974293-817f0ebebb74', tint: '#2A2826', ink: '#F2EFE9', imageSide: 'left',
+    image: 'local:kelly', thumb: 'local:alex', tint: '#2A2826', ink: '#F2EFE9', imageSide: 'left',
   },
   {
     n: '02', page: '22', title: 'Beyond the Ordinary', category: 'Redesign', client: 'Halden Quarterly · Issue 14',
@@ -56,7 +75,7 @@ export const STORIES: Story[] = [
     intro: 'A thirty-year-old culture quarterly that had stopped being picked up. We rebuilt the grid, the masthead and the editorial voice — and gave colour back to the cover.',
     quote: 'We didn’t change what Halden says. We changed how loudly it says it.',
     credits: [['Editorial strategy', 'Lior Anand'], ['Design', 'Amara Osei'], ['Type', 'Paolo Ferri'], ['Result', '+41% newsstand'], ['For', 'Halden Quarterly']],
-    image: '1562572159-4efc207f5aff', thumb: '1529139574466-a303027c1d8b', tint: '#763B43', ink: '#F2EFE9', imageSide: 'right',
+    image: 'local:ruffle', thumb: 'local:paloma', tint: '#763B43', ink: '#F2EFE9', imageSide: 'right',
   },
   {
     n: '03', page: '36', title: 'Modern Muse', category: 'Launch Issue', client: 'Muse Collective · Issue Nº1',
@@ -64,7 +83,7 @@ export const STORIES: Story[] = [
     intro: 'A founding team, an idea and no magazine yet. We named it, set its tone, commissioned its writers and photographers, and took Issue Nº1 to print in eleven weeks.',
     quote: 'A launch issue is a promise. Every issue after it has to keep it.',
     credits: [['Concept & naming', 'ARQOVA'], ['Managing editor', 'Céline Moreau'], ['Photography', 'Yuki Tan'], ['Print run', '8,000 copies'], ['For', 'Muse Collective']],
-    image: '1611042553365-9b101441c135', thumb: '1531746020798-e6953c6e8e04', tint: '#C8B6A0', ink: '#171717', imageSide: 'left',
+    image: 'local:paloma', thumb: 'local:sun', tint: '#C8B6A0', ink: '#171717', imageSide: 'left',
   },
   {
     n: '04', page: '50', title: 'Form & Feeling', category: 'Art Direction', client: 'Oblique Magazine · Form Issue',
@@ -72,7 +91,7 @@ export const STORIES: Story[] = [
     intro: 'Guest art direction for Oblique’s Form Issue. White on white on white: a layout system where margins do the talking and every page reads like a floor plan.',
     quote: 'Take away the colour and all that is left is structure — and nerve.',
     credits: [['Guest art direction', 'ARQOVA'], ['Editor', 'Amara Osei'], ['Photography', 'Lior Anand'], ['Pages', '144'], ['For', 'Oblique Magazine']],
-    image: '1589465885857-44edb59bbff2', thumb: '1608748010899-18f300247112', tint: '#E4DED4', ink: '#171717', imageSide: 'right',
+    image: 'local:sun', thumb: 'local:olive', tint: '#E4DED4', ink: '#171717', imageSide: 'right',
   },
   {
     n: '05', page: '64', title: 'The New Elegance', category: 'Custom Publishing', client: 'Atelier Sorn · Members’ Journal',
@@ -80,7 +99,7 @@ export const STORIES: Story[] = [
     intro: 'A private journal for Atelier Sorn’s clients: interviews with makers, notes from the atelier, one red flower on every cover. Mailed twice a year, kept for much longer.',
     quote: 'Elegance is the decision to leave one thing out — even in print.',
     credits: [['Editor', 'Lior Anand'], ['Writing', 'Marc Duval'], ['Production', 'Studio Grão'], ['Circulation', '4,000 members'], ['For', 'Atelier Sorn']],
-    image: '1571513722275-4b41940f54b8', thumb: '1550639525-c97d455acf70', tint: '#3C463A', ink: '#F2EFE9', imageSide: 'left',
+    image: 'local:olive', thumb: 'local:ember', tint: '#3C463A', ink: '#F2EFE9', imageSide: 'left',
   },
   {
     n: '06', page: '78', title: 'After the Light', category: 'Independent Title', client: 'ARQOVA Press · Annual',
@@ -88,6 +107,6 @@ export const STORIES: Story[] = [
     intro: 'Every agency should publish its own magazine. Ours is an annual of portraits made only after sunset — written, designed and printed in-house, then sold out in nine days.',
     quote: 'We publish our own title so we never forget what our clients are risking.',
     credits: [['Publisher', 'ARQOVA Press'], ['Photography', 'Tomás Reis'], ['Design', 'ARQOVA'], ['Format', '240 × 320 mm'], ['For', 'Ourselves']],
-    image: '1502823403499-6ccfcf4fb453', thumb: '1512316609839-ce289d3eba0a', tint: '#1D1A26', ink: '#F2EFE9', imageSide: 'right',
+    image: 'local:ember', thumb: 'local:ruffle', tint: '#1D1A26', ink: '#F2EFE9', imageSide: 'right',
   },
 ]

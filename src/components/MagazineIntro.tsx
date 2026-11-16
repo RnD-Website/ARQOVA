@@ -35,7 +35,8 @@ function dims(vw: number, vh: number) {
   let W: number
   if (mobile) W = Math.min(vw * 0.82, vh * 0.66 * ratio)
   else W = Math.min(vw * (vw < 1024 ? 0.46 : 0.43), (vh - 150) * ratio)
-  const H = W / ratio
+  W = Math.round(W)
+  const H = Math.round(W / ratio)
   // where the spine sits once open: desktop centres the spread, mobile pans to the right page
   const xA = mobile ? W * 0.3 : W / 2
   const xB = mobile ? 0 : W / 2
@@ -55,10 +56,22 @@ function MagazineScroll({ vw, vh }: { vw: number; vh: number }) {
   const radius = useTransform(p, T.shrink, [0, 3])
   const rotX = useTransform(p, [0.12, 0.28, 0.44], [0, 9, 0])
   const rotZ = useTransform(p, [0.12, 0.28, 0.44], [0, -2.5, 0])
-  const x = useTransform(p, [0.44, 0.64, 0.7, 0.88], [0, xA, xA, xB])
+  // whole pixels only — subpixel offsets make the page text render soft
+  const x = useTransform(p, [0.44, 0.64, 0.7, 0.88], [0, xA, xA, xB], { clamp: true })
+  const xPx = useTransform(x, Math.round)
+  const yPx = useTransform(y, Math.round)
   const coverRot = useTransform(p, T.open, [0, -180])
   const leafRot = useTransform(p, T.turn, [0, -180])
-  const bookScale = useTransform(p, [0.88, 1], [1, 1.03])
+  // Depth offsets keep stacked leaves from z-fighting, but under perspective they also scale each
+  // page by ~0.1% and resample its text. So depth is on only while the book tilts or a leaf turns;
+  // at rest every page lies flat at z=0 and renders pixel-sharp (coplanar pages paint in DOM order).
+  const active = useTransform(p, [0.115, 0.125, 0.645, 0.655, 0.69, 0.7, 0.885, 0.895], [0, 1, 1, 0, 0, 1, 1, 0])
+  const zCoverFront = useTransform(active, (a) => a * 3)
+  const zCoverBack = useTransform(active, (a) => -a * 1)
+  const zLeaf = useTransform(active, (a) => a * 2)
+  const zLeafBack = useTransform(active, (a) => -a * 2)
+  // once the leaf has turned, the advert sits fully under it — hide it so the flat stack stays correct
+  const advertVis = useTransform(leafRot, (r) => (r < -90 ? 'hidden' : 'visible'))
   const depth = useTransform(p, [0.2, 0.36], [0, 1])
   const hint = useTransform(p, [0, 0.06], [1, 0])
   const stageBg = useTransform(p, [0.2, 0.4], ['#171717', '#F2EFE9'])
@@ -68,7 +81,7 @@ function MagazineScroll({ vw, vh }: { vw: number; vh: number }) {
       <motion.div className="intro-stage" style={{ backgroundColor: stageBg }}>
         <motion.div
           className="book"
-          style={{ width: w, height: h, x, y, rotateX: rotX, rotateZ: rotZ, scale: bookScale, borderRadius: radius }}
+          style={{ width: w, height: h, x: xPx, y: yPx, rotateX: rotX, rotateZ: rotZ, borderRadius: radius }}
         >
           <motion.div className="book-shadow" style={{ opacity: depth }} aria-hidden />
           <motion.div className="book-edges" style={{ opacity: depth }} aria-hidden />
@@ -81,28 +94,28 @@ function MagazineScroll({ vw, vh }: { vw: number; vh: number }) {
 
           {/* z1 — the leaf that turns: front = "in this issue", back = editor portrait */}
           <motion.div className="leaf turn-leaf" style={{ rotateY: leafRot }}>
-            <div className="face front page">
+            <motion.div className="face front page" style={{ z: zLeaf }}>
               <InThisIssue />
               <div className="gutter gutter-left" />
               <LeafShade rot={leafRot} />
-            </div>
-            <div className="face back page">
-              <Photo id={IMG.editor} alt="Portrait of ARQOVA founder Lior Anand" sizes="45vw" position="50% 30%" className="fill" />
+            </motion.div>
+            <motion.div className="face back page" style={{ rotateY: 180, z: zLeafBack }}>
+              <Photo id={IMG.editor} alt="Portrait of ARQOVA founder Lior Anand" sizes="(max-width: 767px) 95vw, 60vw" position="50% 30%" className="fill" />
               <p className="page-caption">Lior Anand, founder &amp; editorial director. Photographed in the Lisbon newsroom.</p>
               <div className="gutter gutter-right" />
-            </div>
+            </motion.div>
           </motion.div>
 
           {/* z2 — the front cover: front = cover, back = inside-cover advert */}
           <motion.div className="leaf cover-leaf" style={{ rotateY: coverRot, borderRadius: radius }}>
-            <div className="face front">
+            <motion.div className="face front" style={{ z: zCoverFront }}>
               <Cover p={p} />
               <LeafShade rot={coverRot} />
-            </div>
-            <div className="face back page">
+            </motion.div>
+            <motion.div className="face back page" style={{ rotateY: 180, z: zCoverBack, visibility: advertVis }}>
               <Advert />
               <div className="gutter gutter-right" />
-            </div>
+            </motion.div>
           </motion.div>
         </motion.div>
 
@@ -139,7 +152,7 @@ function Cover({ p }: { p?: MotionValue<number> }) {
   return (
     <div className="cover">
       <motion.div className="cover-img" style={{ scale: imgScale }}>
-        <Photo id={IMG.cover} alt="Cover: a model in dramatic low light" priority sizes="100vw" position="50% 22%" className="fill" />
+        <Photo id={IMG.cover} alt="Cover: a model in dramatic low light" priority sizes="115vw" position="50% 22%" className="fill" />
       </motion.div>
       <div className="cover-vignette" />
       <motion.p className="cover-kicker" style={{ opacity: o1 }}>
@@ -172,7 +185,7 @@ function Cover({ p }: { p?: MotionValue<number> }) {
 function Advert() {
   return (
     <div className="advert">
-      <Photo id={IMG.advert} alt="ARQOVA advertisement" sizes="45vw" position="50% 30%" className="fill" />
+      <Photo id={IMG.advert} alt="ARQOVA advertisement" sizes="(max-width: 767px) 95vw, 60vw" position="50% 30%" className="fill" />
       <div className="advert-grad" />
       <p className="advert-label">Advertisement</p>
       <div className="advert-copy">
@@ -196,7 +209,7 @@ function InThisIssue() {
         ))}
       </ol>
       <div className="issue-foot">
-        <Photo id={IMG.intro} alt="" sizes="12vw" className="issue-thumb" />
+        <Photo id={IMG.intro} alt="" sizes="(max-width: 767px) 35vw, 20vw" className="issue-thumb" />
         <p>Six magazines we made for brands and publishers — and the thinking behind each one.</p>
       </div>
       <p className="turn-cue">Turn the page →</p>
@@ -223,7 +236,7 @@ function EditorsLetter() {
           <p className="sig">Lior Anand</p>
           <p className="sig-role">Founder &amp; editorial director</p>
         </div>
-        <Photo id={IMG.signature} alt="" sizes="10vw" className="letter-thumb" />
+        <Photo id={IMG.signature} alt="" sizes="(max-width: 767px) 30vw, 16vw" className="letter-thumb" />
       </div>
     </div>
   )

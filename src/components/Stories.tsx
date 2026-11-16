@@ -58,7 +58,7 @@ function StorySpread({ story: s, index, last }: { story: Story; index: number; l
       >
         <div className="spread-img">
           <motion.div className="spread-img-inner" style={{ scale: st(imgScale) as never, y: st(imgY) as never }}>
-            <Photo id={s.image} alt={`${s.title} — ${s.category}`} sizes="(max-width: 767px) 100vw, 50vw" position="50% 25%" className="fill" />
+            <Photo id={s.image} alt={`${s.title} — ${s.category}`} sizes="(max-width: 767px) 130vw, 66vw" position={s.pos ?? '50% 25%'} className="fill" />
           </motion.div>
           <span className="spread-folio">ARQOVA · P.{s.page}</span>
         </div>
@@ -84,7 +84,7 @@ function StorySpread({ story: s, index, last }: { story: Story; index: number; l
             {next ? <a href={`#story-${next.n}`}>{next.title} →</a> : <a href="#sequence">Continue →</a>}
           </nav>
           <motion.figure className="polaroid" style={{ y: st(polaroidY) as never, rotate: st(polaroidR) as never }}>
-            <Photo id={s.thumb} alt="" sizes="160px" className="fill" />
+            <Photo id={s.thumb} alt="" sizes="320px" className="fill" />
             <figcaption>Cover {s.n} · Proof {index + 3}</figcaption>
           </motion.figure>
         </div>

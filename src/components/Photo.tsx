@@ -15,7 +15,7 @@ export function Photo({ id, alt, sizes = '100vw', priority, className = '', styl
   return (
     <img
       className={`photo ${className}`}
-      src={photo(id, 1600)}
+      src={photo(id, 2000)}
       srcSet={srcSet(id)}
       sizes={sizes}
       alt={alt}

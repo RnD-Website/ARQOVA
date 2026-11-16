@@ -83,7 +83,7 @@ export function Contents() {
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    <img className="photo" src={photo(s.image, 900, 600)} alt="" loading="lazy" />
+                    <img className="photo" src={photo(s.image, 1600, 1066)} alt="" loading="lazy" />
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -110,7 +110,7 @@ export function Contents() {
                 exit={reduce ? { opacity: 0 } : { clipPath: 'inset(0 0 100% 0)', scale: 0.96 }}
                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               >
-                <img className="photo" src={photo(STORIES[active].image, 700, 900)} alt="" />
+                <img className="photo" src={photo(STORIES[active].image, 1000, 1320)} alt="" />
                 <span>{STORIES[active].category}</span>
               </motion.div>
             )}

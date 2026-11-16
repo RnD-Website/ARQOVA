@@ -59,7 +59,7 @@ export function Sequence() {
 
         <motion.div className="seq-hero" style={{ clipPath, y: heroY }}>
           <motion.div className="seq-hero-inner" style={{ scale: heroScale }}>
-            <Photo id={IMG.seq[0]} alt="A model in a long coat in a stone courtyard" position="50% 30%" className="fill" />
+            <Photo id={IMG.seq[0]} alt="A model in a long coat in a stone courtyard" sizes="140vw" position="50% 30%" className="fill" />
           </motion.div>
           <motion.div className="seq-shade" style={{ opacity: shade }} />
         </motion.div>
@@ -87,7 +87,7 @@ function Frame({ f, p }: { f: (typeof FRAMES)[number]; p: MotionValue<number> })
       className="seq-frame"
       style={{ left: `${f.left}vw`, top: `${f.top}vh`, width: `${f.w}vw`, y, rotate }}
     >
-      <Photo id={f.id} alt="" sizes="22vw" className="fill" />
+      <Photo id={f.id} alt="" sizes="(max-width: 767px) 50vw, 30vw" className="fill" />
     </motion.figure>
   )
 }
